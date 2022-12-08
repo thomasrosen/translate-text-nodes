@@ -1,0 +1,64 @@
+<html>
+
+<head>
+  <title>Express</title>
+  <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+
+<body>
+  <h1>Express</h1>
+  <p>Welcome to <strong>Express</strong></p>
+  
+  <script>
+    //Add a new function to the HTMLElement object so it can be used on any HTMLElement
+HTMLElement.prototype.textNodes = function() {
+  return [...this.childNodes].filter((node) => {
+    return (node.nodeType === Node.TEXT_NODE && node.nodeValue.trim() !== "");
+  });
+}
+
+function isEmptyText(text) {
+  return text.replace(/\s/gm, '').length === 0
+}
+
+function textNodesUnder(el){
+  const not_these_nodes = 'head script'.toUpperCase().split(' ')
+  var n, a=[], walk=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null,false);
+  while(n=walk.nextNode()) {
+    if (!not_these_nodes.includes(walk.currentNode.parentNode.nodeName)) {
+      if (!isEmptyText(n.textContent)) {
+        n.parentNode.setAttribute('text_node_id', '123')
+        console.log(n.parentNode)
+        a.push(n.parentNode.innerHTML)
+        // a.push(n);
+      }
+    }
+  }
+  return a;
+}
+
+
+//Use the new HTMLElement function
+document.addEventListener('DOMContentLoaded', () => {
+  
+  
+    const nodes = textNodesUnder(document)
+    console.log('nodes', nodes)
+    
+    /*
+    .textNodes().forEach((node) => {
+      console.log('node', node)
+      // node.textContent = 'Replaced';
+    });
+    */
+
+/*
+  document.querySelector('#replaceFirst').addEventListener('click', function() {
+    document.querySelector('#testSubject').textNodes()[0].textContent = 'Replaced First';
+  });
+  */
+});
+  </script>
+</body>
+
+</html>
